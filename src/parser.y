@@ -1,3 +1,10 @@
+// UPDATE table_reference SET assignment_list [WHERE where_condition] [ORDER BY ...] [LIMIT row_count]
+// assignment_list: assignment [, assignment] ...
+// assignment: col_name = value
+// value: {expr | DEFAULT}
+
+// UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;
+
 %{
     #include<stdio.h>
     #include<stdlib.h>
@@ -8,11 +15,13 @@
     int yylex();
 %}
 
-%token UPDATE  SET  WHERE ORDER BY ASC DESC LIMIT AND OR
+%token UPDATE  SET  WHERE ORDER BY ASC DESC LIMIT AND OR DEFAULT
 %token KEYWORD
-%token IDENTIFIER STRING_LITERAL NEGATIVE_DIGIT POSITIVE_DIGIT FLOAT DATE OPERATOR
+%token IDENTIFIER STRING_LITERAL NEGATIVE_DIGIT POSITIVE_DIGIT FLOAT DATE COMPARISION_OPERATOR
 %left OR
 %left AND
+%left '+' '-'
+%left '*' '/'
 %left ',' '(' ')'
 %%
 
@@ -23,29 +32,39 @@ start:  query ';' {
 query:	UPDATE table_name SET assignment_list
     |   UPDATE table_name SET assignment_list option_list
     ;
-table_name:	IDENTIFIER;
 assignment_list:	assignment_list ',' assignment_list
-	|	assignment
+	|   '(' assignment ')'
+    |	assignment
     ;
-assignment:	'(' assignment ')'
-	|	IDENTIFIER '=' real_number
-    |   IDENTIFIER '=' identifiers_strings
+assignment: col_name '=' value;
+table_name:	IDENTIFIER;
+col_name:   IDENTIFIER;
+value:  expr
+    |   DEFAULT
     ;
+expr:   real_number
+    |   identifiers_strings
+    |   col_name operation real_number
+    |   real_number operation col_name
+    |   real_number operation real_number
+    ;
+operation:  '+' | '-' | '*' | '/';
 option_list:	WHERE condition_list
     |   ORDER BY order_by_list
     |   LIMIT POSITIVE_DIGIT
     |   WHERE condition_list ORDER BY order_by_list
     |   WHERE condition_list LIMIT POSITIVE_DIGIT
+    |   ORDER BY order_by_list LIMIT POSITIVE_DIGIT
     |   WHERE condition_list ORDER BY order_by_list LIMIT POSITIVE_DIGIT
     ;
-condition_list:	condition OR condition
-	|	condition AND condition
+condition_list:	condition_list OR condition_list
+	|	condition_list AND condition_list
+    |   '(' condition ')'
 	|	condition
 	;
-condition:	'(' condition ')'
-	|	IDENTIFIER '=' identifiers_strings
-	|	IDENTIFIER '=' real_number
-	|	IDENTIFIER OPERATOR real_number
+condition:	col_name '=' identifiers_strings
+	|	col_name '=' real_number
+	|	col_name COMPARISION_OPERATOR real_number
 	;
 identifiers_strings:	IDENTIFIER
 	|	STRING_LITERAL
@@ -55,9 +74,9 @@ real_number:	POSITIVE_DIGIT
 	|	FLOAT
 	;
 order_by_list:	order_by_list ',' order_by_list
-	|	IDENTIFIER
-	|	IDENTIFIER ASC
-    |   IDENTIFIER DESC
+	|	col_name
+	|	col_name ASC
+    |   col_name DESC
     ;
 %%
 
