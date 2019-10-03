@@ -1,54 +1,39 @@
+%option case-insensitive
 %{
     #include "y.tab.h"
 %}
 
-UPDATE  [uU][pP][dD][aA][tT][eE]
-SET     [sS][eE][tT]
-WHERE   [wW][hH][eE][rE][eE]
-ORDER   [oO][rR][dD][eE][rR] 
-BY      [bB][yY]
-ASC     [aA][sS][cC]
-DESC    [dD][eE][sS][cC]
-LIMIT   [lL][iI][mM][iI][tT]
-AND     [aA][nN][dD]
-OR      [oO][rR]
-DEFAULT [dD][eE][fF][aA][uU][lL][tT]
 KEYWORD ADD|ALL|ALTER|ANALYZE|AUTO_INCREMENT|BDB|BERKELEYDB|BETWEEN|BIGINT|BINARY|BLOB|BOTH|BTREE|CASCADE|CASE|CHANGE|CHAR|CHARACTER|CHECK|COLLATE|COLUMN|COLUMNS|CONSTRAINT|CREATE|CROSS|CURRENT_DATE|CURRENT_TIME|CURRENT_TIMESTAMP|DATABASE|DATABASES|DAY_HOUR|DAY_MINUTE|DAY_SECOND|DEC|DECIMAL|DELAYED|DELETE|DESCRIBE|DISTINCT|DISTINCTROW|DIV|DOUBLE|DROP|ELSE|ENCLOSED|ERRORS|ESCAPED|EXISTS|EXPLAIN|FALSE|FIELDS|FLOAT|FOR|FORCE|FOREIGN|FULLTEXT|FUNCTION|GEOMETRY|GRANT|GROUP|HASH|HAVING|HELP|HIGH_PRIORITY|HOUR_MINUTE|HOUR_SECOND|IF|INDEX|INFILE|INNER|INNODB|INSERT|INT|INTEGER|INTERVAL|INTO|IS|JOIN|KEY|KEYS|KILL|LEADING|LEFT|LIKE|LINES|LOAD|LOCALTIME|LOCALTIMESTAMP|LOCK|LONG|LONGBLOB|LONGTEXT|MASTER_SERVER_ID|MATCH|MEDIUMBLOB|MEDIUMINT|MEDIUMTEXT|MIDDLEINT|MINUTE_SECOND|MOD|MRG_MYISAM|NATURAL|NOT|NULL|NUMERIC|ON|OPTIMIZE|OPTION|OPTIONALLY|OUTER|OUTFILE|PRECISION|PRIMARY|PRIVILEGES|PROCEDURE|PURGE|READ|REAL|REFERENCES|REGEXP|RENAME|REPLACE|REQUIRE|RESTRICT|RETURNS|REVOKE|RIGHT|RLIKE|RTREE|SELECT|SHOW|SMALLINT|SOME|SONAME|SPATIAL|SQL_BIG_RESULT|SQL_CALC_FOUND_ROWS|SQL_SMALL_RESULT|SSL|STARTING|STRAIGHT_JOIN|STRIPED|TABLE|TABLES|TERMINATED|THEN|TINYBLOB|TINYINT|TINYTEXT|TO|TRAILING|TRUE|TYPES|UNION|UNIQUE|UNLOCK|UNSIGNED|USAGE|USE|USER_RESOURCES|USING|VALUES|VARBINARY|VARCHAR|VARCHARACTER|VARYING|WARNINGS|WHEN|WITH|WRITE|XOR|YEAR_MONTH|ZEROFILL 
 
-DATE ([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)[0-9]{4}
 STRING_LITERAL (\'(\\.|[^'\\])*\')|(\"(\\.|[^"\\])*\")
-POSITIVE_DIGIT [0-9]+
-NEGATIVE_DIGIT [-]?[0-9]+
-FLOAT -?[0-9]+"."[0-9]*|-?"."[0-9]+|-?[0-9]+E[-+]?[0-9]+|-?[0-9]+"."[0-9]*E[-+]?[0-9]+|-?"."[0-9]*E[-+]?[0-9]+
+POSITIVE_DIGIT [1-9][0-9]*
+FLOAT [0-9]*(\.[0-9]+)?
 IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 COMPARISION_OPERATOR (>)|(<)|(>=)|(<=)|(!=)|(<>)|(<=>)
 
 %%
-
-{UPDATE}                return UPDATE;
-{SET}                   return SET;
-{WHERE}                 return WHERE;
-{ORDER}                 return ORDER;
-{BY}                    return BY;
-{ASC}                   return ASC;
-{DESC}                  return DESC;
-{LIMIT}                 return LIMIT;
-{AND}                   return AND;
-{OR}                    return OR;
-{DEFAULT}               return DEFAULT;
+[ \t\n]+ ;
+UPDATE                return UPDATE;
+SET                   return SET;
+WHERE                 return WHERE;
+ORDER                 return ORDER;
+BY                    return BY;
+ASC                   return ASC;
+DESC                  return DESC;
+LIMIT                 return LIMIT;
+AND                   return AND;
+OR                    return OR;
+DEFAULT               return DEFAULT;
 
 {KEYWORD}               return KEYWORD;
 {POSITIVE_DIGIT}        { yylval=atoi(yytext); return POSITIVE_DIGIT; }
-{NEGATIVE_DIGIT}        { yylval=atoi(yytext); return NEGATIVE_DIGIT; }
 {FLOAT}                 { yylval=atoi(yytext); return FLOAT; }
 
 {IDENTIFIER}            return IDENTIFIER;
 {STRING_LITERAL}        return STRING_LITERAL;
 
-{DATE}                  return DATE;
 {COMPARISION_OPERATOR}  return COMPARISION_OPERATOR;
-[,;=()*+-/]             return *yytext;
-
+.   return *yytext;
 %%
 
 int yywrap() {

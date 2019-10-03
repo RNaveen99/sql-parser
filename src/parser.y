@@ -22,6 +22,7 @@
 %left AND
 %left '+' '-'
 %left '*' '/'
+%left UMINUS
 %left ',' '(' ')'
 %%
 
@@ -42,13 +43,13 @@ col_name:   IDENTIFIER;
 value:  expr
     |   DEFAULT
     ;
-expr:   real_number
+expr:   expr '+' expr
+    |   expr '-' expr
+    |   expr '*' expr
+    |   expr '/' expr
+    |   real_number
     |   identifiers_strings
-    |   col_name operation real_number
-    |   real_number operation col_name
-    |   real_number operation real_number
     ;
-operation:  '+' | '-' | '*' | '/';
 option_list:	WHERE condition_list
     |   ORDER BY order_by_list
     |   LIMIT POSITIVE_DIGIT
@@ -62,15 +63,14 @@ condition_list:	condition_list OR condition_list
     |   '(' condition ')'
 	|	condition
 	;
-condition:	col_name '=' identifiers_strings
-	|	col_name '=' real_number
+condition:	assignment
 	|	col_name COMPARISION_OPERATOR real_number
 	;
 identifiers_strings:	IDENTIFIER
 	|	STRING_LITERAL
 	;
 real_number:	POSITIVE_DIGIT
-	|	NEGATIVE_DIGIT
+	|	'-' real_number %prec UMINUS
 	|	FLOAT
 	;
 order_by_list:	order_by_list ',' order_by_list
