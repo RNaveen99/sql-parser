@@ -1,4 +1,4 @@
-# sql parser
+# **sql parser**
 
 A simple parser for sql made using lex yacc / [GNU's flex bison](https://www.gnu.org/software/bison/manual/).
 
@@ -6,20 +6,33 @@ It currently supports only selected sql queries as stated below.
 
 ## How to make
 
-- go to source folder `cd src`
+- go to source folder 
+    ```
+    cd src
+    ```
 - `make` to build : this will generate the usual files and executes the executable file
 
 ## Assumptions
 
-- each statement ends with `semicolon`
+- queries are `case-insensitive`
+- each query ends with `semicolon`
+- keywords cant be identifiers
 
 ## Cases Handled
-- 
-    ```
-    UPDATE table_reference SET assignment_list [WHERE where_condition] [ORDER BY ...] [LIMIT row_count]
-    ```
+> UPDATE table_reference SET assignment_list [WHERE where_condition] [ORDER BY ...] [LIMIT row_count]
 
-- keywords cant be identifiers
+> ## **update** *table_reference* **set** *assignment_list*
+>- `update customer set bonus = 1000; `
+>- `update customer set bonus = 1000, gst = 200;`
+>- `update customer set bonus = 1000, gst = 200, bonus_type = 'Diwali';`
+>- `update customer set bonus = 1000, gst = 200, bonus_type = 'Diwali', extra = bonus + 200;`
+>- `update customer set bonus = 1000, gst = 2 * 10 ;`
+>- `update customer set bonus = 1000, gst = 2 * 5 + 5 - 10 / 2;`
+
+> ## **update** *table_reference* **set** *assignment_list* **where** *condition_list*
+>- `update customer set bonus = 1000, gst = 20 where bonus_type = 'Diwali';`
+>- `update customer set bonus = 1000, gst = 20 where bonus_type = 'Diwali' and salary >= 40000;`
+
 
 
 ## Reference links
