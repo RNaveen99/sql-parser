@@ -18,9 +18,10 @@ It currently supports only selected sql queries as stated below.
 - each query ends with `semicolon`
 - keywords cant be identifiers
 
-## Cases Handled
+## Syntax
 > UPDATE table_reference SET assignment_list [WHERE where_condition] [ORDER BY ...] [LIMIT row_count]
 
+## Cases Handled
 > ## **update** *table_reference* **set** *assignment_list*
 >- `update customer set bonus = 1000; `
 >- `update customer set bonus = 1000, gst = 200;`
@@ -30,10 +31,21 @@ It currently supports only selected sql queries as stated below.
 >- `update customer set bonus = 1000, gst = 2 * 5 + 5 - 10 / 2;`
 
 > ## **update** *table_reference* **set** *assignment_list* **where** *condition_list*
->- `update customer set bonus = 1000, gst = 20 where bonus_type = 'Diwali';`
->- `update customer set bonus = 1000, gst = 20 where bonus_type = 'Diwali' and salary >= 40000;`
+- > `update customer set bonus = 1000, gst = 20 where bonus_type = 'Diwali';`
+- > `update customer set bonus = 1000, gst = 20 where bonus_type = 'Diwali' and salary >= 40000;`
+- > `update customer set bonus = 1000, gst = 20 where bonus_type = 'Diwali' and salary >= 40000 or salary <= 20000;`
 
+> ## **update** *table_reference* **set** *assignment_list* **order by** *column*
+- > `update customer set bonus = 1000, gst = 20 order by cid;`
+- > `update customer set bonus = 1000, gst = 20 order by cid asc, salary desc;`
 
+> ## **update** *table_reference* **set** *assignment_list* **Limit** *row_count*
+- > `update customer set bonus = 1000, gst = 20 limit 10;`
+
+> ## **update** *table_reference* **set** *assignment_list* **where** *condition_list* **order by** *column* **Limit** *row_count*
+- > `update customer set bonus = 1000, gst = 20 where bonus_type = 'Diwali' and salary >= 40000 or salary <= 20000 order by cid desc limit 5;`
+
+## Cases Not Handled
 
 ## Reference links
 

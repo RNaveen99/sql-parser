@@ -13,17 +13,17 @@ COMPARISION_OPERATOR (>)|(<)|(>=)|(<=)|(!=)|(<>)|(<=>)
 
 %%
 [ \t\n]+ ;
-UPDATE                return UPDATE;
-SET                   return SET;
-WHERE                 return WHERE;
-ORDER                 return ORDER;
-BY                    return BY;
-ASC                   return ASC;
-DESC                  return DESC;
-LIMIT                 return LIMIT;
-AND                   return AND;
-OR                    return OR;
-DEFAULT               return DEFAULT;
+UPDATE                  return UPDATE;
+SET                     return SET;
+WHERE                   return WHERE;
+ORDER                   return ORDER;
+BY                      return BY;
+ASC                     return ASC;
+DESC                    return DESC;
+LIMIT                   return LIMIT;
+AND                     return AND;
+OR                      return OR;
+DEFAULT                 return DEFAULT;
 
 {KEYWORD}               return KEYWORD;
 {POSITIVE_DIGIT}        { yylval=atoi(yytext); return POSITIVE_DIGIT; }
@@ -33,7 +33,7 @@ DEFAULT               return DEFAULT;
 {STRING_LITERAL}        return STRING_LITERAL;
 
 {COMPARISION_OPERATOR}  return COMPARISION_OPERATOR;
-.   return *yytext;
+.                       return *yytext;
 %%
 
 int yywrap() {
