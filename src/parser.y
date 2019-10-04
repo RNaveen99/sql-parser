@@ -15,11 +15,12 @@
     int yylex();
 %}
 
-%token UPDATE  SET  WHERE ORDER BY ASC DESC LIMIT AND OR DEFAULT
+%token UPDATE  SET  WHERE ORDER BY ASC DESC LIMIT AND OR DEFAULT BETWEEN
 %token KEYWORD
 %token IDENTIFIER STRING_LITERAL NEGATIVE_DIGIT POSITIVE_DIGIT FLOAT DATE COMPARISION_OPERATOR
 %left OR
 %left AND
+%left BETWEEN
 %left '+' '-'
 %left '*' '/'
 %left UMINUS
@@ -65,6 +66,7 @@ condition_list:	condition_list OR condition_list
 	;
 condition:	assignment
 	|	col_name COMPARISION_OPERATOR real_number
+    |   col_name BETWEEN real_number AND real_number
 	;
 identifiers_strings:	IDENTIFIER
 	|	STRING_LITERAL

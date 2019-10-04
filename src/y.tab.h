@@ -50,15 +50,16 @@
      AND = 266,
      OR = 267,
      DEFAULT = 268,
-     KEYWORD = 269,
-     IDENTIFIER = 270,
-     STRING_LITERAL = 271,
-     NEGATIVE_DIGIT = 272,
-     POSITIVE_DIGIT = 273,
-     FLOAT = 274,
-     DATE = 275,
-     COMPARISION_OPERATOR = 276,
-     UMINUS = 277
+     BETWEEN = 269,
+     KEYWORD = 270,
+     IDENTIFIER = 271,
+     STRING_LITERAL = 272,
+     NEGATIVE_DIGIT = 273,
+     POSITIVE_DIGIT = 274,
+     FLOAT = 275,
+     DATE = 276,
+     COMPARISION_OPERATOR = 277,
+     UMINUS = 278
    };
 #endif
 /* Tokens.  */
@@ -73,15 +74,16 @@
 #define AND 266
 #define OR 267
 #define DEFAULT 268
-#define KEYWORD 269
-#define IDENTIFIER 270
-#define STRING_LITERAL 271
-#define NEGATIVE_DIGIT 272
-#define POSITIVE_DIGIT 273
-#define FLOAT 274
-#define DATE 275
-#define COMPARISION_OPERATOR 276
-#define UMINUS 277
+#define BETWEEN 269
+#define KEYWORD 270
+#define IDENTIFIER 271
+#define STRING_LITERAL 272
+#define NEGATIVE_DIGIT 273
+#define POSITIVE_DIGIT 274
+#define FLOAT 275
+#define DATE 276
+#define COMPARISION_OPERATOR 277
+#define UMINUS 278
 
 
 
